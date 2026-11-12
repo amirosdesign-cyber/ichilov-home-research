@@ -140,3 +140,22 @@ function runSyntheticIntakeTest() {
   }
   return body;
 }
+
+/**
+ * Use ONLY after opening Extensions > Apps Script from the approved Sheet.
+ * Configures the active spreadsheet, email and a random secret in private
+ * Script Properties. Does not publish any web endpoint or submit responses.
+ */
+function prepareBoundSheetTest() {
+  const book = SpreadsheetApp.getActiveSpreadsheet();
+  if (!book) throw new Error("Open this script from the research Google Sheet");
+  const props = PropertiesService.getScriptProperties();
+  props.setProperty("SPREADSHEET_ID", book.getId());
+  props.setProperty("NOTIFY_EMAIL", "amiros.design@gmail.com");
+  if (!props.getProperty("INGEST_TOKEN")) {
+    props.setProperty("INGEST_TOKEN",
+      Utilities.getUuid().replace(/-/g, "") +
+      Utilities.getUuid().replace(/-/g, ""));
+  }
+  console.log("Test environment configured; no answers sent.");
+}
