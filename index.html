@@ -25,7 +25,7 @@ function csvCell(v){return '"'+String(safe(v)).replace(/"/g,'""').replace(/\r?\n
 function values(){const q=active.mode==='short'?DATA.short[active.type]:DATA.interview[active.type].groups.flatMap(g=>g.questions);const response={mode:active.mode,type:active.type,code:$('code').value.trim(),stage:$('stage').value};q.forEach((x,i)=>{response['שאלה '+String(i+1).padStart(2,'0')+' · '+x.q]=active.mode==='short'?shortResponse(i+1,x):$('answer'+(i+1)).value.trim()});if(active.mode==='interview')for(const [id,label] of details)response[label]=$('extra_'+id).value.trim();return response}
 function download(text,filename,type){const blob=new Blob(['\uFEFF'+text],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);dirty=false;exported=true;$('actionstatus').textContent='הופעל ייצוא מקומי. ודאו שהקובץ נשמר במקום מאושר.'}
 function filename(ext){const c=$('code').value.trim().replace(/[^a-zA-Z0-9_-]/g,'').slice(0,18);return 'ichilov-home-'+active.mode+'-'+active.type+(c?'-'+c:'')+'.'+ext}
-const INTAKE_URL='https://script.google.com/macros/s/AKfycbyHpD27M8qoc5T3SJIzNzhbCfiZ5yeLf-9re_1ouslg3dPkEGWRTQe3u19tUc3WklTojg/exec';
+const INTAKE_URL='https://script.google.com/macros/s/AKfycbyHpD27M8qoc5T3SJIzNzHbCfiZ5yeLf-9re_1ouslg3dPkEGWRTQe3u19tUc3WklTojg/exec';
 function sendResearchResponse(){
   if(!active||!started||!$('consent').checked){$('actionstatus').textContent='יש לאשר השתתפות ולהתחיל בשאלון.';return}
   if(!confirm('לשלוח את התשובות לצוות המחקר ולשמור אותן בטבלה?'))return;
