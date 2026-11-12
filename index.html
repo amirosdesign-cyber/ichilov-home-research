@@ -35,7 +35,7 @@ function sendResearchResponse(){
   if(active.mode==='interview'){
     const notes=details.map(([id,label])=>({label,value:$('extra_'+id).value.trim()})).filter(x=>x.value);
     if(notes.length){
-      const appendix='\\n\\n--- סיכום המראיין/ת ---\\n'+notes.map(x=>x.label+': '+x.value).join('\\n');
+      const appendix='\n\n--- סיכום המראיין/ת ---\n'+notes.map(x=>x.label+': '+x.value).join('\n');
       if(answers[15].length+appendix.length>5000){$('actionstatus').textContent='הסיכום ארוך מדי לשליחה. יש לייצא את הריאיון כקובץ TXT.';return}
       answers[15]+=appendix;
     }
