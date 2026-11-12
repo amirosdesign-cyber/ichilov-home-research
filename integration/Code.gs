@@ -99,3 +99,44 @@ function doPost(e) {
     return result_("rejected", "Invalid request");
   }
 }
+
+/**
+ * Run this function from the Apps Script editor (not from the public site).
+ * It submits synthetic choices to the approved Sheet and emails metadata.
+ * Set the three script properties before running.
+ */
+function runSyntheticIntakeTest() {
+  const props = PropertiesService.getScriptProperties();
+  const token = props.getProperty("INGEST_TOKEN");
+  if (!token) throw new Error("First set INGEST_TOKEN in Script Properties");
+  const event = {
+    postData: {
+      contents: JSON.stringify({
+        token: token,
+        test: true,
+        mode: "short",
+        type: "patient",
+        code: "DEMO-NOT-REAL",
+        stage: "בדיקת דמה",
+        answers: [
+          "נמצא/ת כעת באשפוז ביתי",
+          "מתי ואיך אפשר לפנות לצוות",
+          "בשיחת טלפון",
+          "לא התעורר מצב כזה",
+          "לא נתקלתי בקושי",
+          "פעלתי לפי ההנחיות שקיבלתי",
+          "הנחיות ברורות",
+          "בדיקת מערכת בלבד; לא מדובר בתשובה של משתתף."
+        ]
+      })
+    }
+  };
+  const output = doPost(event);
+  const body = output.getContent();
+  console.log(body);
+  const parsed = JSON.parse(body);
+  if (parsed.status !== "accepted_test") {
+    throw new Error("Test failed: " + parsed.message);
+  }
+  return body;
+}
