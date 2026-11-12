@@ -57,7 +57,8 @@ function sendResearchResponse(){
 $('send').addEventListener('click',sendResearchResponse);
 $('retry').addEventListener('click',()=>{
   if(!confirm('ניסיון נוסף עלול ליצור כפילות. יש להמשיך רק אם בלשונית האישור הופיעה הודעה שלא ניתן לשמור, או שצוות המחקר וידא שהתשובה לא התקבלה. לנסות שוב?'))return;
-  submissionPending=false;sendResearchResponse();
+  submissionPending=false;$('send').disabled=false;$('retry').classList.add('hidden');
+  $('actionstatus').textContent='אפשר לנסות שוב באמצעות כפתור שליחת התשובות. אין לשלוח שוב אם התקבל אישור שמירה.';
 });
 function doCsv(){const v=values();download(Object.keys(v).map(csvCell).join(',')+'\r\n'+Object.values(v).map(csvCell).join(',')+'\r\n',filename('csv'),'text/csv;charset=utf-8')}
 function doTxt(){const v=values();download(Object.entries(v).map(([k,v])=>k+':\n'+v+'\n').join('\n'),filename('txt'),'text/plain;charset=utf-8')}
